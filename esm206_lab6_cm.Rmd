@@ -1,0 +1,67 @@
+---
+title: "Lab 6"
+author: "Claire Meuter"
+date: "11/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(palmerpenguins)
+library(broom)
+library(equatiomatic)
+```
+
+## Example of a rank-based test
+
+We'll mae our own samples using a psuedo-random generator. We use set.seed which is random number generator 
+
+```{r}
+set.seed(1414)
+gp_1 <- sample.int(20, size = 15, replace = TRUE)
+
+
+set.seed(1424)
+gp_2 <- sample.int(30, size = 15, replace = TRUE)
+```
+
+Say we want to compare these samples. 
+
+```{r}
+## way to make a really quick histogram
+hist(gp_1)
+
+hist(gp_2)
+```
+We can just try a T-test
+```{r}
+t.test(gp_1, gp_2)
+```
+Meaning of this p-value:if these populations drawn from populations with thte same mean, then there 19.8% chance that 
+
+If these samples were drawn from populations with the same mean (aka same population) the probability of taking to random samples withmeans *at least as diferent* as the sample means we found by random chance (taking into account sprad, n) is 19.8%. We cannot reject the null hypothesis. We fail to reject the null hypothesis. There is no significant difference between group 1 and group 2. 
+
+## Now let's compare this outcome to a rank-based test
+
+## Mann Whitney U unpaired rank-based test
+defult of wilcox.test is unpaired
+
+```{r}
+mwu <- wilcox.test(gp_1, gp_2) # warning can be ignored
+
+mwu
+
+```
+Null hypothesis with rank test is both populations have same rannk
+
+This P-value means that...
+If these samples were drawn from populations with the same ranks (medians)  the probability of taking two random samples with ranks *at least as diferent* as the sample rank we found by random chance (taking into account sprad, n) is 28%. 
+There is no significant difference in ranks betwen group 1 and group 2 (statistcal summary)
+
+Median scores for group 1 (M = 14) and group 2 ( M = 12) did not differ significantly 
+
+Make sure to send a consistant message about what is responsible analysis 
+
+
+
