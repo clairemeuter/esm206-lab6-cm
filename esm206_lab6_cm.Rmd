@@ -63,5 +63,71 @@ Median scores for group 1 (M = 14) and group 2 ( M = 12) did not differ signific
 
 Make sure to send a consistant message about what is responsible analysis 
 
+If I do ?wilcox.test in console and then look at values like 
+mwu$p.value ... or I can just look at the environment 
+
+If we have more than 2 sample groups we use kruskal.test 
+
+## Linear regression
+Now we're starting linear regression (we'll get into this more on Wednesday in lecture)
+
+Simple linear regression (single dependent variable, a simple indepentdent variable)
+
+```{r, include=FALSE}
+# Make an exploratory plot of penguin body mass (y-axis) versus flipper length (x-axis)
+
+ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point() + geom_smooth(method = "lm")
+
+# We can set this code chunk to not show up this exploration in the knitted document: do include = FALSE in setup
+# Looking at this graph we can relationship between flipper length and body mass- we can use geom_smooth(method = "lm" to see relationship )
+```
+
+Find a linear regression model using ordinary least squares describing the relationship between flipper length and body mass for these penguins 
+3 pieces:
+1. What type of model?
+2. What is the relationship to model? (DV ~ IV (s))
+3. Where is the data that's used to create this model?
+
+
+```{r}
+penguin_lm <- lm(body_mass_g ~ flipper_length_mm, data = penguins)
+penguin_lm
+```
+
+## When I call up the lm it give the intercept and the flipper length 
+y=mx+b
+y= body mass
+x= flipper length
+body mass is equal to 49.7times(flipper length)
+
+49.7 is the slope that describes the flipper length and body mass relationship 
+a 1 mm increase in flipper length equals a 49.7 gram change in body mass
+-5780.83 grams: when flipper length is zero, this model predicts that the body mass of the penguin would be -5780.83
+
+Because of this it's important to determine in what ranges this model can be realistically used 
+
+### Broom package returns model outputs as tidy data frames
+
+```{r}
+penguin_lm_tidy <- broom::tidy(penguin_lm)
+
+penguin_lm_tidy
+
+broom::glance(penguin_lm)
+```
+
+
+## What if I want to report this model equation in a report? 
+
+```{r}
+extract_eq(model = penguin_lm, use_coefs = TRUE)
+```
+
+# looks good knitted
+
+```{r}
+plot(penguin_lm)
+```
 
 
